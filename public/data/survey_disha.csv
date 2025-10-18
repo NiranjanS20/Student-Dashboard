@@ -1,9 +1,0 @@
-respondent_id,member,ward,location,footpath_condition,road_condition,walking_frequency,obstacles,reasons_not_walking,improvements,timestamp
-R-017,Disha,Ward 78,Virar,2,2,Rarely,broken_paving;no_kerb,poor_lighting;traffic_speed,repair_paving;lighting;traffic_calming,2025-09-07T10:00:00Z
-R-018,Disha,Ward 78,Virar,1,1,Never,broken_paving;encroachment;vendors,poor_lighting;traffic_speed;parking_on_footpath,repair_paving;lighting;wider_paths;traffic_calming,2025-09-08T13:30:00Z
-R-019,Disha,Ward 78,Virar,3,3,Weekly,vendors;no_kerb,traffic_speed;parking_on_footpath,wider_paths;better_signals,2025-09-09T09:45:00Z
-R-020,Disha,Ward 78,Virar,2,2,Rarely,broken_paving;encroachment,poor_lighting;traffic_speed,repair_paving;lighting;traffic_calming,2025-09-10T14:15:00Z
-R-021,Disha,Ward 78,Virar,4,3,Daily,vendors;encroachment,parking_on_footpath,wider_paths,2025-09-11T11:20:00Z
-R-022,Disha,Ward 78,Virar,1,2,Never,broken_paving;no_kerb;encroachment;vendors,poor_lighting;traffic_speed;parking_on_footpath,repair_paving;lighting;wider_paths;traffic_calming;better_signals,2025-09-12T16:45:00Z
-R-023,Disha,Ward 78,Virar,3,4,Weekly,no_kerb;vendors,traffic_speed,better_signals;traffic_calming,2025-09-13T08:30:00Z
-R-024,Disha,Ward 78,Virar,2,3,Rarely,broken_paving;encroachment,poor_lighting;parking_on_footpath,repair_paving;lighting;wider_paths,2025-09-14T12:00:00Z

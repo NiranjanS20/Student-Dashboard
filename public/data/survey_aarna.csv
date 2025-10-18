@@ -1,9 +1,0 @@
-respondent_id,member,ward,location,footpath_condition,road_condition,walking_frequency,obstacles,reasons_not_walking,improvements,timestamp
-R-009,Aarna,Ward 45,Goregaon West,3,4,Daily,vendors;encroachment,traffic_speed,better_signals;wider_paths,2025-09-08T09:30:00Z
-R-010,Aarna,Ward 45,Goregaon West,4,4,Daily,no_kerb,parking_on_footpath,wider_paths;traffic_calming,2025-09-09T11:15:00Z
-R-011,Aarna,Ward 45,Goregaon West,2,3,Weekly,broken_paving;vendors,poor_lighting;traffic_speed,repair_paving;lighting;better_signals,2025-09-10T14:20:00Z
-R-012,Aarna,Ward 45,Goregaon West,3,3,Weekly,encroachment;no_kerb,parking_on_footpath,wider_paths;traffic_calming,2025-09-11T10:45:00Z
-R-013,Aarna,Ward 45,Goregaon West,4,5,Daily,vendors,traffic_speed,better_signals,2025-09-12T16:00:00Z
-R-014,Aarna,Ward 45,Goregaon West,1,2,Rarely,broken_paving;encroachment;no_kerb,poor_lighting;traffic_speed;parking_on_footpath,repair_paving;lighting;wider_paths;traffic_calming;better_signals,2025-09-13T12:30:00Z
-R-015,Aarna,Ward 45,Goregaon West,3,4,Weekly,vendors;encroachment,parking_on_footpath;traffic_speed,wider_paths;better_signals,2025-09-14T08:15:00Z
-R-016,Aarna,Ward 45,Goregaon West,5,4,Daily,no_kerb,traffic_speed,traffic_calming,2025-09-15T15:45:00Z

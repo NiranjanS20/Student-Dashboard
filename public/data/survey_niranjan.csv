@@ -1,9 +1,0 @@
-respondent_id,member,ward,location,footpath_condition,road_condition,walking_frequency,obstacles,reasons_not_walking,improvements,timestamp
-R-001,Niranjan,Ward 62,Mahim East,2,3,Weekly,no_kerb;encroachment,traffic_speed;parking_on_footpath,wider_paths;traffic_calming,2025-09-10T10:00:00Z
-R-002,Niranjan,Ward 62,Mahim East,1,2,Rarely,broken_paving;vendors,poor_lighting,repair_paving;lighting,2025-09-11T12:30:00Z
-R-003,Niranjan,Ward 62,Mahim East,3,4,Daily,encroachment;no_kerb,traffic_speed,wider_paths;better_signals,2025-09-12T09:15:00Z
-R-004,Niranjan,Ward 62,Mahim East,2,3,Weekly,broken_paving;vendors;encroachment,parking_on_footpath;poor_lighting,repair_paving;lighting;traffic_calming,2025-09-13T14:45:00Z
-R-005,Niranjan,Ward 62,Mahim East,4,4,Daily,vendors,traffic_speed,wider_paths,2025-09-14T11:20:00Z
-R-006,Niranjan,Ward 62,Mahim East,1,2,Never,broken_paving;no_kerb;encroachment,poor_lighting;traffic_speed;parking_on_footpath,repair_paving;lighting;wider_paths;traffic_calming,2025-09-15T16:30:00Z
-R-007,Niranjan,Ward 62,Mahim East,3,3,Weekly,vendors;encroachment,parking_on_footpath,wider_paths;better_signals,2025-09-16T08:45:00Z
-R-008,Niranjan,Ward 62,Mahim East,2,3,Rarely,broken_paving;no_kerb,poor_lighting;traffic_speed,repair_paving;lighting;traffic_calming,2025-09-17T13:10:00Z
