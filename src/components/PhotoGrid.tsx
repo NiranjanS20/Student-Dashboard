@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
 
 interface PhotoGridProps {
@@ -17,10 +17,14 @@ const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, title, maxDisplay = 4 }) 
   const openLightbox = (photo: string, index: number) => {
     setSelectedPhoto(photo);
     setCurrentIndex(index);
+    // Prevent body scroll when lightbox is open
+    document.body.style.overflow = 'hidden';
   };
 
   const closeLightbox = () => {
     setSelectedPhoto(null);
+    // Restore body scroll when lightbox is closed
+    document.body.style.overflow = 'unset';
   };
 
   const navigatePhoto = (direction: 'prev' | 'next') => {
@@ -31,6 +35,30 @@ const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, title, maxDisplay = 4 }) 
     setCurrentIndex(newIndex);
     setSelectedPhoto(photos[newIndex]);
   };
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (!selectedPhoto) return;
+      
+      switch (event.key) {
+        case 'Escape':
+          closeLightbox();
+          break;
+        case 'ArrowLeft':
+          if (photos.length > 1) navigatePhoto('prev');
+          break;
+        case 'ArrowRight':
+          if (photos.length > 1) navigatePhoto('next');
+          break;
+      }
+    };
+
+    if (selectedPhoto) {
+      document.addEventListener('keydown', handleKeyPress);
+      return () => document.removeEventListener('keydown', handleKeyPress);
+    }
+  }, [selectedPhoto, photos.length]);
 
   if (!photos || photos.length === 0) {
     return (

@@ -1,6 +1,10 @@
 # Walkability Watch
 
-A fully functional, interactive React website showcasing tasks and outputs for an NGO walkability project across Mumbai. Built with modern web technologies and designed for accessibility and responsiveness.
+A fully functional, interactive React website showcasing tasks and outputs for an NGO walkability project across Mumbai. Built with modern web technologies and designed for accessibility, responsiveness, and production deployment.
+
+[![Build Status](https://github.com/your-username/walkability-watch/workflows/Build%20and%20Deploy/badge.svg)](https://github.com/your-username/walkability-watch/actions)
+[![Accessibility](https://img.shields.io/badge/accessibility-WCAG%20AA-green.svg)](https://www.w3.org/WAI/WCAG21/quickref/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## 🚀 Quick Start
 
@@ -241,17 +245,65 @@ Supported chart types:
 
 ## 🌐 Deployment
 
-The project is configured for static deployment:
+### GitHub Pages (Recommended)
+
+1. **Enable GitHub Actions** in your repository settings
+2. **Push to main branch** - deployment happens automatically via GitHub Actions
+3. **Configure Pages** in repository settings to use GitHub Actions source
+4. **Custom domain** (optional): Update `cname` in `.github/workflows/main.yml`
+
+### Manual Deployment
 
 ```bash
+# Build the project
 npm run build
+
+# Preview the build locally
+npm run preview
 ```
 
 Deploy the `dist/` folder to any static hosting service:
-- Netlify
-- Vercel
-- GitHub Pages
-- AWS S3 + CloudFront
+
+#### Netlify
+1. Drag and drop `dist/` folder to Netlify dashboard
+2. Or connect GitHub repository for automatic deployments
+3. Build command: `npm run build`
+4. Publish directory: `dist`
+
+#### Vercel
+```bash
+npm install -g vercel
+vercel --prod
+```
+
+#### AWS S3 + CloudFront
+```bash
+# Install AWS CLI and configure credentials
+aws s3 sync dist/ s3://your-bucket-name --delete
+aws cloudfront create-invalidation --distribution-id YOUR_DIST_ID --paths "/*"
+```
+
+#### GitHub Pages (Manual)
+```bash
+npm run build
+npx gh-pages -d dist
+```
+
+### Environment Variables
+
+For production deployment, you may need to set:
+- `BASE_URL`: Base path for your application (default: `/`)
+- `NODE_ENV`: Set to `production` for optimized builds
+
+### Post-Deployment Checklist
+
+- ✅ All pages load correctly
+- ✅ CSV data loads without CORS issues
+- ✅ External links (Mapillary, Google Maps) work
+- ✅ Images and assets load properly
+- ✅ Responsive design works on all devices
+- ✅ Accessibility features function correctly
+- ✅ Performance scores are acceptable (Lighthouse audit)
 
 ## 🎮 External Integration
 
@@ -284,25 +336,58 @@ Deploy the `dist/` folder to any static hosting service:
 
 1. **CSV Loading Errors**
    - Ensure CSV files are in `/public/data/`
-   - Check file names match member configuration
-   - Verify CSV format matches expected schema
+   - Check file names match member configuration in `src/data/members.ts`
+   - Verify CSV format matches expected schema (11 columns)
+   - Check network tab in browser dev tools for 404 errors
 
 2. **Map Embedding Issues**
-   - Some browsers block iframe embedding
-   - Fallback buttons provide direct links
+   - Some browsers block iframe embedding due to CORS policies
+   - Fallback buttons provide direct links to Google My Maps
    - Check network connectivity for external maps
+   - Verify iframe sandbox attributes are properly set
 
 3. **Chart Display Problems**
-   - Verify data format in CSV files
-   - Check chart type configuration
-   - Ensure Recharts dependencies are installed
+   - Verify data format in CSV files matches expected types
+   - Check chart type configuration in member config
+   - Ensure Recharts dependencies are installed correctly
+   - Look for JavaScript errors in browser console
+
+4. **Build/Deployment Issues**
+   - Run `npm run build` to check for TypeScript errors
+   - Verify all assets are in `/public/` directory
+   - Check that relative paths work in production
+   - Ensure environment variables are set correctly
+
+5. **Accessibility Issues**
+   - Test with screen readers (NVDA, JAWS, VoiceOver)
+   - Verify keyboard navigation works throughout the site
+   - Check color contrast ratios meet WCAG AA standards
+   - Ensure all interactive elements have proper ARIA labels
 
 ### Development Tips
 
-- Use browser dev tools to inspect CSV loading
-- Check console for any JavaScript errors
-- Verify responsive design across different screen sizes
-- Test accessibility with screen reader tools
+- Use browser dev tools to inspect CSV loading and network requests
+- Check console for any JavaScript errors or warnings
+- Verify responsive design across different screen sizes (mobile, tablet, desktop)
+- Test accessibility with screen reader tools and keyboard-only navigation
+- Use Lighthouse audits to check performance and accessibility scores
+- Run `npm run lint` to catch code quality issues early
+
+### Performance Optimization
+
+- Images are lazy-loaded and optimized by Vite
+- Charts render only when visible (intersection observer)
+- CSV data is cached after first load
+- Static assets have proper cache headers
+- Bundle size is monitored with bundlesize package
+
+### Security Considerations
+
+- All external links use `rel="noopener noreferrer"`
+- Iframes have proper sandbox attributes
+- No inline scripts or unsafe content
+- Input validation on all user interactions
+- Content Security Policy headers recommended for production
 
 ## 📝 License
 

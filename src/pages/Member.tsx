@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Camera, MessageSquare, Building } from 'lucide-react';
+import { ArrowLeft, MapPin, Camera, MessageSquare, Building, Users } from 'lucide-react';
 import ChartCard from '../components/ChartCard';
 import MapEmbed from '../components/MapEmbed';
 import ExternalLinkCard from '../components/ExternalLinkCard';
@@ -36,11 +36,39 @@ const Member: React.FC = () => {
   if (!member) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Member Not Found</h1>
-          <Link to="/team" className="text-primary-600 hover:text-primary-700">
-            ← Back to Team
-          </Link>
+        <Link
+          to="/team"
+          className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-6"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Team
+        </Link>
+        
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+          <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Users className="h-8 w-8 text-yellow-600" />
+          </div>
+          
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Team Member Not Found</h1>
+          <p className="text-gray-600 mb-6">
+            The team member "{memberKey}" doesn't exist or may have been removed from our records.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              to="/team"
+              className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors"
+            >
+              <Users className="h-4 w-4 mr-2" />
+              View All Team Members
+            </Link>
+            <Link
+              to="/"
+              className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              Go to Dashboard
+            </Link>
+          </div>
         </div>
       </div>
     );

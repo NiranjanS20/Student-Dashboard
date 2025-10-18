@@ -77,6 +77,8 @@ const MapEmbed: React.FC<MapEmbedProps> = ({ url, title, height = 480 }) => {
           onError={handleIframeError}
           onLoad={handleIframeLoad}
           title={title}
+          aria-label={`Interactive map: ${title}`}
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
         />
       </div>
     </div>

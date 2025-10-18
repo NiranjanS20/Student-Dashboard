@@ -22,13 +22,21 @@ const ChartCard: React.FC<ChartCardProps> = ({
   const renderChart = () => {
     if (!data || data.length === 0) {
       return (
-        <div className="h-64 flex items-center justify-center text-gray-500">
-          No data available
+        <div className="h-64 flex flex-col items-center justify-center text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+          <div className="text-center">
+            <div className="text-4xl mb-2">📊</div>
+            <h3 className="font-medium text-gray-900 mb-1">No Data Available</h3>
+            <p className="text-sm text-gray-600 max-w-xs">
+              This chart will display data once survey responses are loaded. 
+              Check your network connection or try refreshing the page.
+            </p>
+          </div>
         </div>
       );
     }
 
-    switch (type) {
+    try {
+      switch (type) {
       case 'bar':
       case 'barByWardAvg':
         return (
@@ -69,7 +77,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
                 fill="#8884d8"
                 dataKey="value"
               >
-                {data.map((entry, index) => (
+                {data.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={getChartColors(index)} />
                 ))}
               </Pie>
@@ -85,7 +93,27 @@ const ChartCard: React.FC<ChartCardProps> = ({
         );
 
       default:
-        return <div>Unsupported chart type</div>;
+        return (
+          <div className="h-64 flex items-center justify-center text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+            <div className="text-center">
+              <div className="text-4xl mb-2">⚠️</div>
+              <h3 className="font-medium text-gray-900 mb-1">Unsupported Chart Type</h3>
+              <p className="text-sm text-gray-600">Chart type "{type}" is not supported</p>
+            </div>
+          </div>
+        );
+      }
+    } catch (error) {
+      console.error('Chart rendering error:', error);
+      return (
+        <div className="h-64 flex items-center justify-center text-gray-500 bg-red-50 rounded-lg border-2 border-dashed border-red-200">
+          <div className="text-center">
+            <div className="text-4xl mb-2">❌</div>
+            <h3 className="font-medium text-gray-900 mb-1">Chart Error</h3>
+            <p className="text-sm text-gray-600">Failed to render chart. Please check the data format.</p>
+          </div>
+        </div>
+      );
     }
   };
 
