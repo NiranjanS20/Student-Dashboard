@@ -1,4 +1,5 @@
 import Papa from 'papaparse';
+import { mapGoogleFormsToStandard, getMemberNameFromPath, GoogleFormsSurveyRow } from './surveyDataMapper';
 
 export interface SurveyResponse {
   respondent_id: string;
@@ -38,20 +39,44 @@ export const loadCSV = async (csvPath: string): Promise<SurveyResponse[]> => {
           return trimmed;
         },
         complete: (results) => {
-          const data = results.data.map((row: any) => ({
-            ...row,
-            obstacles: row.obstacles ? row.obstacles.split(';').map((s: string) => s.trim()).filter(Boolean) : [],
-            reasons_not_walking: row.reasons_not_walking ? row.reasons_not_walking.split(';').map((s: string) => s.trim()).filter(Boolean) : [],
-            improvements: row.improvements ? row.improvements.split(';').map((s: string) => s.trim()).filter(Boolean) : []
-          }));
-          resolve(data);
+          try {
+            const rawData = results.data as GoogleFormsSurveyRow[];
+            
+            // Check if this is Google Forms data (has the characteristic columns)
+            const isGoogleForms = rawData.length > 0 && 
+              'Timestamp' in rawData[0] && 
+              'What Age group do you belong from? ' in rawData[0];
+            
+            let data: SurveyResponse[];
+            
+            if (isGoogleForms) {
+              // Transform Google Forms data to standard format
+              const memberName = getMemberNameFromPath(csvPath);
+              console.log(`Processing ${csvPath} for member: ${memberName}, rows: ${rawData.length}`);
+              data = mapGoogleFormsToStandard(rawData, memberName);
+              console.log(`Transformed data for ${memberName}:`, data.length, 'responses');
+            } else {
+              // Handle standard format (legacy)
+              data = rawData.map((row: any) => ({
+                ...row,
+                obstacles: row.obstacles ? row.obstacles.split(';').map((s: string) => s.trim()).filter(Boolean) : [],
+                reasons_not_walking: row.reasons_not_walking ? row.reasons_not_walking.split(';').map((s: string) => s.trim()).filter(Boolean) : [],
+                improvements: row.improvements ? row.improvements.split(';').map((s: string) => s.trim()).filter(Boolean) : []
+              }));
+            }
+            
+            resolve(data);
+          } catch (error) {
+            console.error('Error processing CSV data:', error);
+            resolve([]);
+          }
         },
-        error: (error) => {
+        error: (error: any) => {
           reject(error);
         }
       });
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error loading CSV from ${csvPath}:`, error);
     return [];
   }

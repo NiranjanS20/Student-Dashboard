@@ -15,10 +15,10 @@ export const validateAssetPaths = async (): Promise<AssetValidationResult> => {
 
   // Required CSV files
   const csvFiles = [
-    '/data/survey_niranjan.csv',
-    '/data/survey_aarna.csv',
-    '/data/survey_disha.csv',
-    '/data/survey_crisann.csv'
+    '/data/Walkability Survey (Niranjan).csv',
+    '/data/Walkability Survey (Aarna).csv',
+    '/data/Walkability Survey (Disha).csv',
+    '/data/Walkability Survey (Crisann).csv'
   ];
 
   // Check CSV files
@@ -56,10 +56,10 @@ export const preloadCriticalAssets = async (): Promise<void> => {
 
   // Preload critical CSV files
   const csvFiles = [
-    '/data/survey_niranjan.csv',
-    '/data/survey_aarna.csv',
-    '/data/survey_disha.csv',
-    '/data/survey_crisann.csv'
+    '/data/Walkability Survey (Niranjan).csv',
+    '/data/Walkability Survey (Aarna).csv',
+    '/data/Walkability Survey (Disha).csv',
+    '/data/Walkability Survey (Crisann).csv'
   ];
 
   const preloadPromises = csvFiles.map(async (csvPath) => {
