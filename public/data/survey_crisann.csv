@@ -1,0 +1,10 @@
+respondent_id,member,ward,location,footpath_condition,road_condition,walking_frequency,obstacles,reasons_not_walking,improvements,timestamp
+R-025,Crisann,Ward 52,Kandivali,3,4,Daily,vendors;encroachment,traffic_speed,wider_paths;better_signals,2025-09-06T09:00:00Z
+R-026,Crisann,Ward 52,Kandivali,4,4,Daily,no_kerb,parking_on_footpath,traffic_calming,2025-09-07T11:30:00Z
+R-027,Crisann,Ward 52,Kandivali,2,3,Weekly,broken_paving;vendors;encroachment,poor_lighting;traffic_speed,repair_paving;lighting;wider_paths,2025-09-08T14:45:00Z
+R-028,Crisann,Ward 52,Kandivali,3,3,Weekly,encroachment;no_kerb,parking_on_footpath;traffic_speed,wider_paths;traffic_calming,2025-09-09T10:15:00Z
+R-029,Crisann,Ward 52,Kandivali,5,5,Daily,vendors,traffic_speed,better_signals,2025-09-10T16:20:00Z
+R-030,Crisann,Ward 52,Kandivali,1,2,Rarely,broken_paving;encroachment;no_kerb;vendors,poor_lighting;traffic_speed;parking_on_footpath,repair_paving;lighting;wider_paths;traffic_calming;better_signals,2025-09-11T13:00:00Z
+R-031,Crisann,Ward 53,Kandivali,4,4,Daily,vendors;encroachment,parking_on_footpath,wider_paths;better_signals,2025-09-12T08:45:00Z
+R-032,Crisann,Ward 53,Kandivali,3,4,Weekly,no_kerb;vendors,traffic_speed,traffic_calming;better_signals,2025-09-13T15:30:00Z
+R-033,Crisann,Ward 53,Kandivali,2,3,Rarely,broken_paving;encroachment,poor_lighting;parking_on_footpath,repair_paving;lighting;wider_paths,2025-09-14T12:15:00Z
