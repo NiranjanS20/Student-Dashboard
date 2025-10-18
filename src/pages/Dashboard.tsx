@@ -4,6 +4,7 @@ import { Users, BarChart3, MapPin, ExternalLink, Camera, FileText } from 'lucide
 import KPI from '../components/KPI';
 import { members } from '../data/members';
 import { loadCSV, SurveyResponse } from '../utils/csv';
+import Loading from '../components/Loading';
 
 const Dashboard: React.FC = () => {
   const [allData, setAllData] = useState<SurveyResponse[]>([]);
@@ -15,6 +16,15 @@ const Dashboard: React.FC = () => {
         const promises = Object.values(members).map(member => loadCSV(member.csv));
         const results = await Promise.all(promises);
         const combined = results.flat();
+        
+        // Debug: Check data distribution
+        console.log('Total responses:', combined.length);
+        const memberCounts = combined.reduce((acc, response) => {
+          acc[response.member] = (acc[response.member] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>);
+        console.log('Responses per member:', memberCounts);
+        
         setAllData(combined);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -25,6 +35,10 @@ const Dashboard: React.FC = () => {
 
     loadAllData();
   }, []);
+
+  if (loading) {
+    return <Loading message="Loading dashboard data..." fullScreen />;
+  }
 
   const totalResponses = allData.length;
   const avgFootpathScore = allData.length > 0 

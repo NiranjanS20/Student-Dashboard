@@ -5,7 +5,7 @@ import { members } from '../data/members';
 
 const Resources: React.FC = () => {
   // Collect all Mapillary links
-  const allMapillaryLinks = Object.entries(members).flatMap(([key, member]) =>
+  const allMapillaryLinks = Object.entries(members).flatMap(([_, member]) =>
     member.mapillary.map(url => ({
       url,
       memberName: member.name,

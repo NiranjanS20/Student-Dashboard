@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Filter, X } from 'lucide-react';
 import ChartCard from '../components/ChartCard';
 import { members } from '../data/members';
-import { loadCSV, SurveyResponse, tallyMultiSelectField, getTopN, getConditionDistribution } from '../utils/csv';
+import { loadCSV, SurveyResponse } from '../utils/csv';
+import { transformDataForDynamicChart } from '../utils/dynamicDataParser';
 
 interface Filters {
   wards: string[];
@@ -76,31 +77,11 @@ const SurveyInsights: React.FC = () => {
 
   const hasActiveFilters = filters.wards.length > 0 || filters.walkingFrequency.length > 0 || filters.members.length > 0;
 
-  // Chart data
-  const footpathConditionData = getConditionDistribution(filteredData, 'footpath_condition').map(item => ({
-    name: `Rating ${item.condition}`,
-    footpath: item.count
-  }));
-
-  const roadConditionData = getConditionDistribution(filteredData, 'road_condition').map(item => ({
-    name: `Rating ${item.condition}`,
-    road: item.count
-  }));
-
-  // Combine for stacked chart
-  const combinedConditionData = footpathConditionData.map(fp => {
-    const road = roadConditionData.find(r => r.name === fp.name);
-    return {
-      name: fp.name,
-      footpath: fp.footpath,
-      road: road?.road || 0
-    };
-  });
-
-  const obstaclesData = getTopN(tallyMultiSelectField(filteredData, 'obstacles'), 10).map(item => ({
-    name: item.name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-    value: item.value
-  }));
+  // Chart data using dynamic transformation
+  const footpathConditionData = transformDataForDynamicChart(filteredData, 'footpath_condition', 'bar');
+  const roadConditionData = transformDataForDynamicChart(filteredData, 'road_condition', 'bar');
+  const obstaclesData = transformDataForDynamicChart(filteredData, 'obstacles', 'pie');
+  const walkingFrequencyData = transformDataForDynamicChart(filteredData, 'walking_frequency', 'pie');
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -204,16 +185,28 @@ const SurveyInsights: React.FC = () => {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <ChartCard
-          title="Infrastructure Condition Comparison"
-          subtitle="Footpath vs Road condition ratings"
-          data={combinedConditionData}
+          title="Footpath Condition Distribution"
+          subtitle="Rating distribution across all surveys"
+          data={footpathConditionData}
           type="bar"
         />
         <ChartCard
-          title="Top 10 Walking Obstacles"
+          title="Top Walking Obstacles"
           subtitle="Most frequently reported barriers"
           data={obstaclesData}
+          type="pie"
+        />
+        <ChartCard
+          title="Road Condition Distribution"
+          subtitle="Rating distribution across all surveys"
+          data={roadConditionData}
           type="bar"
+        />
+        <ChartCard
+          title="Walking Frequency Patterns"
+          subtitle="How often people walk in surveyed areas"
+          data={walkingFrequencyData}
+          type="pie"
         />
       </div>
 

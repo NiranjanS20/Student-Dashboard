@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Camera, BarChart3, ExternalLink } from 'lucide-react';
+import { MapPin, BarChart3, ExternalLink } from 'lucide-react';
 import { members } from '../data/members';
 
 const Team: React.FC = () => {

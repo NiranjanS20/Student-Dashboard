@@ -2,7 +2,7 @@ export const members = {
   niranjan: {
     name: "Niranjan",
     role: "Field Mapper",
-    csv: "/data/survey_niranjan.csv",
+    csv: "/data/Walkability Survey (Niranjan).csv",
     skywalk: { 
       location: "Mahim East", 
       photos: [
@@ -30,7 +30,7 @@ export const members = {
   aarna: {
     name: "Aarna",
     role: "Survey Coordinator",
-    csv: "/data/survey_aarna.csv",
+    csv: "/data/Walkability Survey (Aarna).csv",
     skywalk: { 
       location: "Goregaon West", 
       photos: [
@@ -57,7 +57,7 @@ export const members = {
   disha: {
     name: "Disha",
     role: "Data Analyst",
-    csv: "/data/survey_disha.csv",
+    csv: "/data/Walkability Survey (Disha).csv",
     skywalk: { 
       location: "Virar", 
       photos: [
@@ -82,7 +82,7 @@ export const members = {
   crisann: {
     name: "Crisann",
     role: "Community Liaison",
-    csv: "/data/survey_crisann.csv",
+    csv: "/data/Walkability Survey (Crisann).csv",
     skywalk: { 
       location: "Kandivali", 
       photos: [

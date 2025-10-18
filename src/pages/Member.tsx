@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Camera, MessageSquare, Building, Users } from 'lucide-react';
+import { ArrowLeft, MapPin, MessageSquare, Users } from 'lucide-react';
 import ChartCard from '../components/ChartCard';
 import MapEmbed from '../components/MapEmbed';
-import ExternalLinkCard from '../components/ExternalLinkCard';
-import PhotoGrid from '../components/PhotoGrid';
+import MapillaryEmbed from '../components/MapillaryEmbed';
+import DynamicPhotoGallery from '../components/DynamicPhotoGallery';
+import Loading from '../components/Loading';
 import { members, MemberKey } from '../data/members';
 import { loadCSV, SurveyResponse } from '../utils/csv';
 import { transformDataForChart } from '../utils/charts';
+import { analyzeCSVSchema, detectBestMetrics, getOptimalChartType, transformDataForDynamicChart, SchemaAnalysis } from '../utils/dynamicDataParser';
 
 const Member: React.FC = () => {
   const { memberKey } = useParams<{ memberKey: string }>();
   const [data, setData] = useState<SurveyResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [schema, setSchema] = useState<SchemaAnalysis | null>(null);
+  const [dynamicMetrics, setDynamicMetrics] = useState<string[]>([]);
 
   const member = memberKey ? members[memberKey as MemberKey] : null;
 
@@ -21,11 +25,23 @@ const Member: React.FC = () => {
 
     const loadMemberData = async () => {
       try {
+        // Load CSV data
         const csvData = await loadCSV(member.csv);
+        console.log(`Member ${memberKey} loaded ${csvData.length} responses from ${member.csv}`);
+        console.log('Sample data:', csvData.slice(0, 2));
         setData(csvData);
+
+        // Analyze schema and detect best metrics
+        const schemaAnalysis = await analyzeCSVSchema(member.csv);
+        setSchema(schemaAnalysis);
+        
+        // Get the two best metrics for this member
+        const bestMetrics = detectBestMetrics(schemaAnalysis);
+        setDynamicMetrics(bestMetrics);
+
+        setLoading(false);
       } catch (error) {
         console.error('Error loading member data:', error);
-      } finally {
         setLoading(false);
       }
     };
@@ -74,8 +90,24 @@ const Member: React.FC = () => {
     );
   }
 
-  const chartData1 = transformDataForChart(data, member.charts[0].type, member.charts[0].metric);
-  const chartData2 = transformDataForChart(data, member.charts[1].type, member.charts[1].metric);
+  if (loading) {
+    return <Loading message="Loading member data..." fullScreen />;
+  }
+
+  // Use dynamic metrics if available, fallback to configured charts
+  const metricsToUse = dynamicMetrics.length >= 2 ? dynamicMetrics : 
+    member.charts.map(chart => chart.metric);
+  
+  const chartType1 = schema ? getOptimalChartType(metricsToUse[0], schema) : member.charts[0]?.type || 'bar';
+  const chartType2 = schema ? getOptimalChartType(metricsToUse[1], schema) : member.charts[1]?.type || 'pie';
+
+  const chartData1 = schema ? 
+    transformDataForDynamicChart(data, metricsToUse[0], chartType1) :
+    transformDataForChart(data, member.charts[0].type, member.charts[0].metric);
+    
+  const chartData2 = schema ? 
+    transformDataForDynamicChart(data, metricsToUse[1], chartType2) :
+    transformDataForChart(data, member.charts[1].type, member.charts[1].metric);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -112,41 +144,31 @@ const Member: React.FC = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <ChartCard
-          title={member.charts[0].title}
+          title={schema?.suggestedCharts.find(s => s.column === metricsToUse[0])?.title || 
+                 member.charts[0]?.title || `${metricsToUse[0]?.replace(/_/g, ' ')} Analysis`}
           data={chartData1}
-          type={member.charts[0].type as any}
+          type={chartType1 as any}
           csvSource={member.csv}
-          lastUpdated="Recent"
+          lastUpdated="Auto-detected from latest data"
         />
         <ChartCard
-          title={member.charts[1].title}
+          title={schema?.suggestedCharts.find(s => s.column === metricsToUse[1])?.title || 
+                 member.charts[1]?.title || `${metricsToUse[1]?.replace(/_/g, ' ')} Analysis`}
           data={chartData2}
-          type={member.charts[1].type as any}
+          type={chartType2 as any}
           csvSource={member.csv}
-          lastUpdated="Recent"
+          lastUpdated="Auto-detected from latest data"
         />
       </div>
 
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        {/* Mapillary Items */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center mb-4">
-            <Camera className="h-5 w-5 text-primary-600 mr-2" />
-            <h2 className="text-xl font-semibold text-gray-900">Mapillary Documentation</h2>
-          </div>
-          <div className="space-y-3">
-            {member.mapillary.map((url, index) => (
-              <ExternalLinkCard
-                key={index}
-                url={url}
-                title={`Mapillary Image ${index + 1}`}
-                description="Street-level imagery and data"
-                type="mapillary"
-              />
-            ))}
-          </div>
-        </div>
+        {/* Mapillary Street-View */}
+        <MapillaryEmbed
+          urls={[...member.mapillary]}
+          title="Mapillary Street-View Documentation"
+          memberName={member.name}
+        />
 
         {/* Street Interviews */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -179,21 +201,11 @@ const Member: React.FC = () => {
 
       {/* Skywalk Audit */}
       <div className="mb-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center mb-4">
-            <Building className="h-5 w-5 text-primary-600 mr-2" />
-            <h2 className="text-xl font-semibold text-gray-900">Skywalk Audit - {member.skywalk.location}</h2>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-600">
-              Comprehensive assessment of skywalk infrastructure, accessibility, and safety conditions in {member.skywalk.location}.
-            </p>
-          </div>
-          <PhotoGrid
-            photos={member.skywalk.photos.map(photo => photo.endsWith('.jpg') ? '/skywalk/placeholder.svg' : photo)}
-            maxDisplay={4}
-          />
-        </div>
+        <DynamicPhotoGallery
+          memberKey={memberKey!}
+          title={`Skywalk Audit - ${member.skywalk.location}`}
+          maxDisplay={6}
+        />
       </div>
 
       {/* Summary Stats */}
