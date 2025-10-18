@@ -43,16 +43,45 @@ npm run preview
 
 **Walkability Watch** is a comprehensive research initiative mapping safer, walkable streets across Mumbai through community-driven data collection and analysis.
 
-### Key Features
+### ✨ Key Features
 
-- **Interactive Dashboard** - Overview with team cards, KPIs, and quick links
-- **Team Profiles** - Individual member pages with charts, maps, and documentation
-- **Survey Insights** - Combined data analysis with filtering capabilities
-- **Ward Maps** - Embedded Google My Maps for geographical context
-- **Skywalk Audits** - Infrastructure assessments with photo documentation
-- **Street Interviews** - Community feedback and insights
-- **Mapillary Integration** - Street-level imagery documentation
-- **Responsive Design** - Mobile-first, accessible interface
+### 🔄 **Dynamic Data Integration (NEW)**
+- **Auto-Schema Detection**: Automatically adapts to CSV structure changes
+- **Smart Metric Selection**: AI-powered selection of most insightful charts
+- **Real-time Data Validation**: Comprehensive error handling and validation
+- **Flexible Data Processing**: Handles various CSV formats and column types
+
+### 🗺️ **Enhanced Mapillary Integration (NEW)**
+- **Interactive Street-View Previews**: Thumbnail galleries with modal lightbox
+- **Multiple URL Format Support**: Works with both image and sequence links
+- **Fallback Mechanisms**: External link buttons when embedding fails
+- **Responsive Design**: Optimized for all screen sizes
+
+### 📸 **Smart Photo Discovery (NEW)**
+- **Auto-Detection**: Finds images using multiple naming patterns
+- **Dynamic Loading**: Lazy loads photos as needed
+- **Keyboard Navigation**: Full accessibility with arrow keys and ESC
+- **Download Support**: Direct download functionality for audit photos
+
+### 📊 **Advanced Data Visualization**
+- **Interactive Dashboard**: Real-time KPIs with enhanced calculations
+- **Individual Member Profiles**: Auto-generated charts based on data analysis
+- **Survey Data Insights**: Advanced filtering and aggregation
+- **Ward Maps**: Embedded Google My Maps with security enhancements
+- **Comprehensive Analytics**: Cross-member data comparison and trends
+
+### 🛡️ **Robust Error Handling (NEW)**
+- **Global Error Boundaries**: Graceful error recovery throughout app
+- **Loading States**: Informative loading indicators and progress feedback
+- **404 Handling**: Custom not-found pages with search functionality
+- **Network Resilience**: Handles offline scenarios and failed requests
+
+### ♿ **Accessibility & UX (ENHANCED)**
+- **WCAG AA Compliance**: Full keyboard navigation and screen reader support
+- **Skip Links**: Quick navigation for assistive technologies
+- **ARIA Labels**: Comprehensive labeling for all interactive elements
+- **Focus Management**: Logical tab order and focus indicators
+- **Mobile Optimization**: Touch-friendly interfaces with responsive design
 
 ## 🏗️ Tech Stack
 
