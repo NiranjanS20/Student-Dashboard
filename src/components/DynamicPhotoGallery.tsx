@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, Download, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
+import { X, Download, ChevronLeft, ChevronRight, Camera, RefreshCw } from 'lucide-react';
+import { discoverMemberImages, aggressiveImageDiscovery } from '../utils/imageDiscovery';
 
 interface PhotoItem {
   src: string;
@@ -13,119 +14,78 @@ interface DynamicPhotoGalleryProps {
   memberKey: string;
   title?: string;
   maxDisplay?: number;
+  showAllImages?: boolean; // New prop to show all images instead of limiting
 }
 
 const DynamicPhotoGallery: React.FC<DynamicPhotoGalleryProps> = ({ 
   memberKey, 
   title = "Photo Documentation", 
-  maxDisplay = 6 
+  maxDisplay = 6,
+  showAllImages = false
 }) => {
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoItem | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [discoveryErrors, setDiscoveryErrors] = useState<string[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const discoverPhotos = async (forceRefresh = false) => {
+    if (forceRefresh) {
+      setIsRefreshing(true);
+    } else {
+      setIsLoading(true);
+    }
+    
+    setDiscoveryErrors([]);
+    
+    try {
+      console.log(`Starting dynamic image discovery for ${memberKey}...`);
+      
+      // Use the dynamic discovery system
+      const discoveryResult = await discoverMemberImages(memberKey);
+      
+      if (discoveryResult.errors.length > 0) {
+        setDiscoveryErrors(discoveryResult.errors);
+      }
+      
+      // If no images found with primary method, try aggressive discovery
+      let imagesToUse = discoveryResult.images;
+      if (imagesToUse.length === 0) {
+        console.log(`No images found with primary discovery, trying aggressive method for ${memberKey}...`);
+        const aggressiveResults = await aggressiveImageDiscovery(memberKey);
+        imagesToUse = aggressiveResults;
+      }
+      
+      // Convert ImageFile[] to PhotoItem[]
+      const discoveredPhotos: PhotoItem[] = imagesToUse.map((imageFile, index) => ({
+        src: imageFile.path,
+        alt: `${memberKey} skywalk audit photo ${index + 1} - ${imageFile.filename}`,
+        filename: imageFile.filename,
+        isLoaded: false,
+        hasError: false
+      }));
+      
+      console.log(`Dynamic discovery found ${discoveredPhotos.length} photos for ${memberKey}`);
+      
+      // Log discovered filenames for debugging
+      if (discoveredPhotos.length > 0) {
+        console.log(`Discovered images for ${memberKey}:`, discoveredPhotos.map(p => p.filename));
+      }
+      
+      setPhotos(discoveredPhotos);
+      
+    } catch (error) {
+      console.error(`Error during image discovery for ${memberKey}:`, error);
+      setDiscoveryErrors([`Failed to discover images: ${error instanceof Error ? error.message : 'Unknown error'}`]);
+      setPhotos([]);
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    const discoverPhotos = async () => {
-      setIsLoading(true);
-      
-      // Define actual photo names based on what we know exists
-      const knownPhotos: Record<string, string[]> = {
-        niranjan: [
-          '20251003_114854AMByGPSMapCamera.jpg',
-          '20251003_114953AMByGPSMapCamera.jpg',
-          '20251003_115042AMByGPSMapCamera.jpg',
-          '20251003_115050AMByGPSMapCamera.jpg',
-          '20251003_115143AMByGPSMapCamera.jpg',
-          '20251003_115236AMByGPSMapCamera.jpg',
-          '20251003_115342AMByGPSMapCamera.jpg',
-          '20251003_115430AMByGPSMapCamera.jpg',
-          '20251003_115514AMByGPSMapCamera.jpg',
-          '20251003_115538AMByGPSMapCamera.jpg',
-          '20251003_115603AMByGPSMapCamera.jpg',
-          '20251003_115708AMByGPSMapCamera.jpg'
-        ],
-        aarna: [
-          'IMG_3955.JPG',
-          'IMG_3956.JPG',
-          'IMG_3957.JPG',
-          'IMG_3958.JPG',
-          'IMG_3959.JPG',
-          'IMG_3960.JPG',
-          'IMG_3961.JPG',
-          'IMG_3962.JPG',
-          'IMG_3963.JPG',
-          'IMG_3964.JPG',
-          'IMG_3965.JPG'
-        ],
-        disha: [
-          '20251004_53506PMByGPSMapCamera.jpg',
-          '20251004_53515PMByGPSMapCamera.jpg',
-          '20251004_53548PMByGPSMapCamera.jpg',
-          '20251004_53559PMByGPSMapCamera.jpg',
-          '20251004_53603PMByGPSMapCamera.jpg',
-          '20251004_53626PMByGPSMapCamera.jpg',
-          '20251004_53658PMByGPSMapCamera.jpg',
-          '20251004_53715PMByGPSMapCamera.jpg',
-          '20251004_53747PMByGPSMapCamera.jpg',
-          '20251004_53751PMByGPSMapCamera.jpg',
-          '20251004_53801PMByGPSMapCamera.jpg',
-          '20251004_53919PMByGPSMapCamera.jpg',
-          '20251004_54012PMByGPSMapCamera.jpg',
-          '20251004_54015PMByGPSMapCamera.jpg',
-          '20251004_54042PMByGPSMapCamera.jpg',
-          '20251004_54058PMByGPSMapCamera.jpg',
-          '20251004_54117PMByGPSMapCamera.jpg',
-          '20251004_54134PMByGPSMapCamera.jpg'
-        ],
-        crisann: [
-          '20251009_41737PMByGPSMapCamera.jpg',
-          '20251009_41752PMByGPSMapCamera.jpg',
-          '20251009_41807PMByGPSMapCamera.jpg',
-          '20251009_41904PMByGPSMapCamera.jpg',
-          '20251009_41955PMByGPSMapCamera.jpg',
-          '20251009_42116PMByGPSMapCamera.jpg',
-          '20251009_42143PMByGPSMapCamera.jpg',
-          '20251009_42422PMByGPSMapCamera.jpg',
-          '20251009_42520PMByGPSMapCamera.jpg',
-          '20251009_42559PMByGPSMapCamera.jpg',
-          '20251009_42644PMByGPSMapCamera.jpg',
-          '20251009_42702PMByGPSMapCamera.jpg',
-          '20251009_42727PMByGPSMapCamera.jpg',
-          '20251009_42808PMByGPSMapCamera.jpg'
-        ]
-      };
-
-      // Get photos for this member
-      const memberPhotos = knownPhotos[memberKey] || [];
-      const discoveredPhotos: PhotoItem[] = [];
-      
-      // Try to load each known photo
-      for (let index = 0; index < memberPhotos.length; index++) {
-        const filename = memberPhotos[index];
-        const photoPath = `/skywalk/${memberKey}/${filename}`;
-        
-        try {
-          const response = await fetch(photoPath, { method: 'HEAD' });
-          if (response.ok) {
-            discoveredPhotos.push({
-              src: photoPath,
-              alt: `${memberKey} skywalk audit photo ${index + 1}`,
-              filename,
-              isLoaded: false,
-              hasError: false
-            });
-          }
-        } catch (error) {
-          console.warn(`Failed to load photo: ${photoPath}`, error);
-        }
-      }
-
-      console.log(`Found ${discoveredPhotos.length} photos for ${memberKey}`);
-      setPhotos(discoveredPhotos);
-      setIsLoading(false);
-    };
-
     discoverPhotos();
   }, [memberKey]);
 
@@ -215,19 +175,41 @@ const DynamicPhotoGallery: React.FC<DynamicPhotoGalleryProps> = ({
     );
   }
 
-  const displayPhotos = photos.slice(0, maxDisplay);
-  const remainingCount = photos.length - maxDisplay;
+  const displayPhotos = showAllImages ? photos : photos.slice(0, maxDisplay);
+  const remainingCount = showAllImages ? 0 : Math.max(0, photos.length - maxDisplay);
 
   return (
     <>
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-          <div className="flex items-center text-sm text-gray-500">
-            <Camera className="h-4 w-4 mr-1" />
-            {photos.length} photos
+          <div className="flex items-center gap-3">
+            <div className="flex items-center text-sm text-gray-500">
+              <Camera className="h-4 w-4 mr-1" />
+              {photos.length} photos
+            </div>
+            <button
+              onClick={() => discoverPhotos(true)}
+              disabled={isRefreshing}
+              className="p-1 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
+              title="Refresh photo gallery"
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </button>
           </div>
         </div>
+
+        {/* Error display */}
+        {discoveryErrors.length > 0 && (
+          <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-sm text-yellow-800 font-medium">Discovery Issues:</p>
+            <ul className="text-sm text-yellow-700 mt-1">
+              {discoveryErrors.map((error, index) => (
+                <li key={index}>• {error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {displayPhotos.map((photo, index) => (

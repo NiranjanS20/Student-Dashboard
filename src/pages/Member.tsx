@@ -204,7 +204,8 @@ const Member: React.FC = () => {
         <DynamicPhotoGallery
           memberKey={memberKey!}
           title={`Skywalk Audit - ${member.skywalk.location}`}
-          maxDisplay={6}
+          maxDisplay={12}
+          showAllImages={true}
         />
       </div>
 

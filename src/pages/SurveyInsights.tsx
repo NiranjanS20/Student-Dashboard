@@ -77,11 +77,15 @@ const SurveyInsights: React.FC = () => {
 
   const hasActiveFilters = filters.wards.length > 0 || filters.walkingFrequency.length > 0 || filters.members.length > 0;
 
-  // Chart data using dynamic transformation
-  const footpathConditionData = transformDataForDynamicChart(filteredData, 'footpath_condition', 'bar');
-  const roadConditionData = transformDataForDynamicChart(filteredData, 'road_condition', 'bar');
-  const obstaclesData = transformDataForDynamicChart(filteredData, 'obstacles', 'pie');
-  const walkingFrequencyData = transformDataForDynamicChart(filteredData, 'walking_frequency', 'pie');
+  // Chart data using dynamic transformation with error handling
+  const footpathConditionData = filteredData.length > 0 ? 
+    transformDataForDynamicChart(filteredData, 'footpath_condition', 'bar') : [];
+  const roadConditionData = filteredData.length > 0 ? 
+    transformDataForDynamicChart(filteredData, 'road_condition', 'bar') : [];
+  const obstaclesData = filteredData.length > 0 ? 
+    transformDataForDynamicChart(filteredData, 'obstacles', 'pie') : [];
+  const walkingFrequencyData = filteredData.length > 0 ? 
+    transformDataForDynamicChart(filteredData, 'walking_frequency', 'pie') : [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
