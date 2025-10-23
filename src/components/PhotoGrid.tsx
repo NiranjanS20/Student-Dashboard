@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
 
 interface PhotoGridProps {
-  photos: string[];
+  photos: readonly string[];
   title?: string;
   maxDisplay?: number;
 }
