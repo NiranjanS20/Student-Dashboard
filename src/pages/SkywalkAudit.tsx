@@ -101,7 +101,7 @@ const SkywalkAudit: React.FC = () => {
                 {/* Photo Documentation */}
                 <div className="lg:col-span-2">
                   <PhotoGrid
-                    photos={member.skywalk.photos.map(photo => photo.endsWith('.jpg') ? '/skywalk/placeholder.svg' : photo)}
+                    photos={member.skywalk.photos}
                     title="Photo Documentation"
                     maxDisplay={6}
                   />

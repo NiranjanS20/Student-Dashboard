@@ -6,9 +6,12 @@ export const members = {
     skywalk: { 
       location: "Mahim East", 
       photos: [
-        "/skywalk/niranjan/1.jpg",
-        "/skywalk/niranjan/2.jpg",
-        "/skywalk/niranjan/3.jpg"
+        "/skywalk/niranjan/20251003_114854AMByGPSMapCamera.jpg",
+        "/skywalk/niranjan/20251003_114953AMByGPSMapCamera.jpg",
+        "/skywalk/niranjan/20251003_115042AMByGPSMapCamera.jpg",
+        "/skywalk/niranjan/20251003_115050AMByGPSMapCamera.jpg",
+        "/skywalk/niranjan/20251003_115143AMByGPSMapCamera.jpg",
+        "/skywalk/niranjan/20251003_115236AMByGPSMapCamera.jpg"
       ]
     },
     mapillary: [
@@ -34,8 +37,12 @@ export const members = {
     skywalk: { 
       location: "Goregaon West", 
       photos: [
-        "/skywalk/aarna/1.jpg",
-        "/skywalk/aarna/2.jpg"
+        "/skywalk/aarna/IMG_3955.JPG",
+        "/skywalk/aarna/IMG_3956.JPG",
+        "/skywalk/aarna/IMG_3957.JPG",
+        "/skywalk/aarna/IMG_3958.JPG",
+        "/skywalk/aarna/IMG_3959.JPG",
+        "/skywalk/aarna/IMG_3960.JPG"
       ]
     },
     mapillary: [
@@ -61,10 +68,12 @@ export const members = {
     skywalk: { 
       location: "Virar", 
       photos: [
-        "/skywalk/disha/1.jpg",
-        "/skywalk/disha/2.jpg",
-        "/skywalk/disha/3.jpg",
-        "/skywalk/disha/4.jpg"
+        "/skywalk/disha/20251004_53506PMByGPSMapCamera.jpg",
+        "/skywalk/disha/20251004_53515PMByGPSMapCamera.jpg",
+        "/skywalk/disha/20251004_53548PMByGPSMapCamera.jpg",
+        "/skywalk/disha/20251004_53559PMByGPSMapCamera.jpg",
+        "/skywalk/disha/20251004_53603PMByGPSMapCamera.jpg",
+        "/skywalk/disha/20251004_53626PMByGPSMapCamera.jpg"
       ]
     },
     mapillary: ["https://mapillary.com/map/im/1158045939477828"],
@@ -86,8 +95,12 @@ export const members = {
     skywalk: { 
       location: "Kandivali", 
       photos: [
-        "/skywalk/crisann/1.jpg",
-        "/skywalk/crisann/2.jpg"
+        "/skywalk/crisann/20251009_41737PMByGPSMapCamera.jpg",
+        "/skywalk/crisann/20251009_41752PMByGPSMapCamera.jpg",
+        "/skywalk/crisann/20251009_41807PMByGPSMapCamera.jpg",
+        "/skywalk/crisann/20251009_41904PMByGPSMapCamera.jpg",
+        "/skywalk/crisann/20251009_41955PMByGPSMapCamera.jpg",
+        "/skywalk/crisann/20251009_42116PMByGPSMapCamera.jpg"
       ]
     },
     mapillary: [
