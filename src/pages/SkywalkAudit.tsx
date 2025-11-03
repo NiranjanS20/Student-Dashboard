@@ -1,6 +1,6 @@
 import React from 'react';
 import { Building, MapPin, Camera, FileText } from 'lucide-react';
-import PhotoGrid from '../components/PhotoGrid';
+import PhotoDocumentation from '../components/PhotoDocumentation';
 import { members } from '../data/members';
 
 const SkywalkAudit: React.FC = () => {
@@ -100,10 +100,14 @@ const SkywalkAudit: React.FC = () => {
 
                 {/* Photo Documentation */}
                 <div className="lg:col-span-2">
-                  <PhotoGrid
-                    photos={member.skywalk.photos}
+                  <PhotoDocumentation 
+                    photos={member.skywalk.photos.map((photo, index) => ({
+                      id: `photo-${index}`,
+                      src: photo,
+                      alt: `Skywalk photo ${index + 1} at ${member.skywalk.location}`,
+                      caption: 'Skywalk Audit Photo'
+                    }))}
                     title="Photo Documentation"
-                    maxDisplay={6}
                   />
                 </div>
               </div>
