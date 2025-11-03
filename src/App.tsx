@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
@@ -12,7 +13,15 @@ import StreetInterviews from './pages/StreetInterviews';
 import Resources from './pages/Resources';
 import About from './pages/About';
 
-function App() {
+// Define the type for the NotFound component props
+interface NotFoundProps {
+  showSearch: boolean;
+}
+
+// Cast the imported NotFound component to include the props type
+const NotFoundWithProps = NotFound as React.FC<NotFoundProps>;
+
+const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
@@ -27,12 +36,20 @@ function App() {
             <Route path="/street-interviews" element={<StreetInterviews />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/about" element={<About />} />
-            <Route path="*" element={<NotFound showSearch={true} />} />
+            <Route 
+              path="*" 
+              element={
+                <NotFoundWithProps 
+                  showSearch={true} 
+                  // Add any other props that NotFound expects
+                />
+              } 
+            />
           </Routes>
         </Layout>
       </Router>
     </ErrorBoundary>
   );
-}
+};
 
 export default App;

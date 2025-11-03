@@ -1,6 +1,6 @@
 import React from 'react';
 import { Building, MapPin, Camera, FileText } from 'lucide-react';
-import PhotoDocumentation from '../components/PhotoDocumentation';
+import PhotoDocumentation, { Photo } from '../components/PhotoDocumentation';
 import { members } from '../data/members';
 
 const SkywalkAudit: React.FC = () => {
@@ -101,13 +101,21 @@ const SkywalkAudit: React.FC = () => {
                 {/* Photo Documentation */}
                 <div className="lg:col-span-2">
                   <PhotoDocumentation 
-                    photos={member.skywalk.photos.map((photo, index) => ({
-                      id: `photo-${index}`,
-                      src: photo,
-                      alt: `Skywalk photo ${index + 1} at ${member.skywalk.location}`,
-                      caption: 'Skywalk Audit Photo'
-                    }))}
-                    title="Photo Documentation"
+                    photos={member.skywalk.photos.map((photoPath, index) => {
+                      // Create a proper public URL for the image
+                      const imageUrl = photoPath.startsWith('/')
+                        ? photoPath // Already a public path
+                        : `/skywalk/${member.name.toLowerCase()}/${photoPath}`; // Construct path
+                      
+                      return {
+                        id: `photo-${member.name.toLowerCase()}-${index}`,
+                        src: imageUrl,
+                        alt: `Skywalk photo ${index + 1} at ${member.skywalk.location}`,
+                        caption: `Photo ${index + 1} - ${member.skywalk.location}`
+                      };
+                    })}
+                    title={`Photo Documentation - ${member.skywalk.location}`}
+                    className="mt-0"
                   />
                 </div>
               </div>
