@@ -1,6 +1,6 @@
 import React from 'react';
 import { Building, MapPin, Camera, FileText } from 'lucide-react';
-import PhotoDocumentation, { Photo } from 'src/components/PhotoDocumentation';
+import PhotoDocumentation from 'src/components/PhotoDocumentation';
 import { members } from '../data/members';
 
 const SkywalkAudit: React.FC = () => {
